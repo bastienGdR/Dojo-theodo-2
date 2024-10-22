@@ -14,12 +14,13 @@ async function handler(_req: Request): Promise<Response> {
   if (_req.method == "OPTIONS") {
     handlePreFlightRequest();
   }
+  const guess = _req.body
 
   const headers = new Headers();
   headers.append("Content-Type", "application/json");
 
   const similarityRequestBody = JSON.stringify({
-    word1: "centrale",
+    word1: guess,
     word2: "supelec",
   });
 
