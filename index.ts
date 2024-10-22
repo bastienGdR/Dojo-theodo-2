@@ -15,13 +15,30 @@ async function handler(_req: Request): Promise<Response> {
     handlePreFlightRequest();
   }
 
+  let body
+
+  try {
+    body = await _req.json(); // Parse the JSON body
+    console.log("Received body:", body); // Log the received body
+
+    // Log a specific value if it exists
+    if (body.guess) {
+      console.log("Guess value:", body.guess); // Log the "guess" value
+    }
+  } catch (error) {
+    console.error("Error parsing JSON body:", error);
+    return new Response("Invalid JSON", { status: 400 });
+  }
+  
+
   const headers = new Headers();
   headers.append("Content-Type", "application/json");
-
+  
   const similarityRequestBody = JSON.stringify({
-    word1: "centrale",
+    word1: body.guess,
     word2: "supelec",
   });
+  console.log("Debug:", similarityRequestBody)
 
   const requestOptions = {
     method: "POST",
